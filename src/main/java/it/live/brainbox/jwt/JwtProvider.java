@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Component
 public class JwtProvider {
-    private static final Long expireInMs = 60000 * 60 * 24 * 365L;
+    private static final Long expireInMs = 60000 * 60 * 24 * 10L;
 
     private static final String SECRET_KEY = "jxgEQeXHuPq8VdbyYFNkANdudQ53YUn4";
     private final static SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
@@ -29,12 +29,19 @@ public class JwtProvider {
                 .compact();
     }
 
+    public boolean validate(String token) throws ExpiredJwtException {
+        return !isExpired(token)
+                && getUsername(token) != null;
+    }
 
     public String getUsername(String token) {
         Claims claims = getClaims(token);
         return claims.get("username", String.class);
     }
-
+    public boolean isExpired(String token) {
+        Claims claims = getClaims(token);
+        return claims.getExpiration().before(new Date(System.currentTimeMillis()));
+    }
 
     private Claims getClaims(String token) throws ExpiredJwtException {
         return Jwts.parserBuilder()

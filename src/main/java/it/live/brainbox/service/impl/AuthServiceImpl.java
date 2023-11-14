@@ -20,9 +20,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<ApiResponse> regLog(UserDTO userDTO) {
         if (userRepository.findByEmailAndUniqueId(userDTO.getEmail(), userDTO.getUniqueId()).isPresent())
-            return ResponseEntity.ok(ApiResponse.builder().message("Xush kelibsiz").status(200).object(jwtProvider.generateToken(userDTO.getEmail())).build());
+            return ResponseEntity.ok(ApiResponse.builder().message("Welcome").status(200).object(jwtProvider.generateToken(userDTO.getEmail())).build());
         userRepository.save(userMapper.toEntity(userDTO));
-        return ResponseEntity.ok(ApiResponse.builder().message("Xush kelibsiz").status(200).object(jwtProvider.generateToken(userDTO.getEmail())).build());
+        return ResponseEntity.ok(ApiResponse.builder().message("Welcome").status(200).object(jwtProvider.generateToken(userDTO.getEmail())).build());
     }
 
 

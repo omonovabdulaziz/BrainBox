@@ -3,6 +3,8 @@ package it.live.brainbox.repository;
 
 import it.live.brainbox.entity.User;
 import it.live.brainbox.entity.enums.SystemRoleName;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,6 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     Optional<User> findByEmailAndUniqueId(String email, String uniqueId);
-    List<User> findAllBySystemRoleName(SystemRoleName systemRoleName);
+    Page<User> findAllBySystemRoleName(SystemRoleName systemRoleName , Pageable pageable);
 
 }

@@ -23,25 +23,25 @@ public class LanguageServiceImpl implements LanguageService {
     @Override
     public ResponseEntity<ApiResponse> addLanguage(LanguageDTO languageDTO) {
         languageRepository.save(languageMapper.toEntity(languageDTO));
-        return ResponseEntity.ok(ApiResponse.builder().message("Til qo'shildi").status(200).build());
+        return ResponseEntity.ok(ApiResponse.builder().message("Language saved").status(200).build());
     }
 
     @Override
     public ResponseEntity<ApiResponse> deleteLanguage(Long languageId) {
         try {
             languageRepository.deleteById(languageId);
-            return ResponseEntity.ok(ApiResponse.builder().message("Til o'chirildi").status(200).build());
+            return ResponseEntity.ok(ApiResponse.builder().message("Language deleted").status(200).build());
         } catch (Exception e) {
-            throw new MainException("Tilni o'chirishda xatolik");
+            throw new MainException("Error deleting language");
         }
     }
 
     @Override
     public ResponseEntity<ApiResponse> updatelanguage(Long languageId, LanguageDTO languageDTO) {
-        Language editedLanguage = languageRepository.findById(languageId).orElseThrow(() -> new NotFoundException("Bunday til topilmadi"));
+        Language editedLanguage = languageRepository.findById(languageId).orElseThrow(() -> new NotFoundException("No such language found"));
         editedLanguage.setName(languageDTO.getName());
         languageRepository.save(editedLanguage);
-        return ResponseEntity.ok(ApiResponse.builder().message("Til yangilandi").status(200).build());
+        return ResponseEntity.ok(ApiResponse.builder().message("Language upadated").status(200).build());
     }
 
     @Override
