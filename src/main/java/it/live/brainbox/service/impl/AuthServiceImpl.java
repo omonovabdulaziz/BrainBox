@@ -1,5 +1,7 @@
 package it.live.brainbox.service.impl;
 
+import it.live.brainbox.entity.enums.SystemRoleName;
+import it.live.brainbox.exception.MainException;
 import it.live.brainbox.jwt.JwtProvider;
 import it.live.brainbox.mapper.UserMapper;
 import it.live.brainbox.payload.ApiResponse;
@@ -23,6 +25,14 @@ public class AuthServiceImpl implements AuthService {
             return ResponseEntity.ok(ApiResponse.builder().message("Welcome").status(200).object(jwtProvider.generateToken(userDTO.getEmail())).build());
         userRepository.save(userMapper.toEntity(userDTO));
         return ResponseEntity.ok(ApiResponse.builder().message("Welcome").status(200).object(jwtProvider.generateToken(userDTO.getEmail())).build());
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse> telegramAdminAuth(String login, String password) {
+        if (!userRepository.existsByEmailAndUniqueIdAndSystemRoleName(login, password , SystemRoleName.ROLE_ADMIN))
+            throw new MainException("Login yoki parolingiz xato");
+
+        return ResponseEntity.ok(ApiResponse.builder().message("Xush kelibsiz").status(200).object(jwtProvider.generateToken(login)).build());
     }
 
 
